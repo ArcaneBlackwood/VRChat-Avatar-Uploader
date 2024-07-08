@@ -11,7 +11,29 @@ VRChat flags any uploaded avatars with "Security checks failed".  Maybe the pack
 </p>
 
 
-### BUILDING VRCA FILES FROM UNITY
+## RUNNING FROM SOURCE
+
+### Clone the repository
+Use either of the following options:
+- Using your terminal type `git clone https://github.com/ArcaneBlackwood/VRChat-Avatar-Uploader.git` and then `cd VRChat-Avatar-Uploader` to switch into the repo's directory
+- Download the repo zipped off Github by downloading https://github.com/ArcaneBlackwood/VRChat-Avatar-Uploader/archive/refs/heads/main.zip (Can be found at the top of the page, a green `<> Code v` button, select `Download Zip`).  Extract the zipfile somewhere and open a terminal in that folder either by shift-right clicking and click `Open PowerShell window here`, or open command prompt from the start menu and `cd C:\Users\SomeUser\...` to the extracted folders location.
+
+### Install the nessisary tools and dependencies
+You will need NodeJS which can be found at https://nodejs.org/
+Note Im using Node.js v20.15.0, which can be downloaded directly [here!](https://nodejs.org/dist/v20.15.1/node-v20.15.1-x64.msi)
+
+Run `npm install` to install all the required packages for this repository.
+
+### Starting directly
+Run `npm start`
+
+### Building Electron executable and installer
+Run `npm build`
+The built files can be found under `./dist/`
+Standalone files can also be found under `./dist/win-unpacked/`
+
+
+## BUILDING VRCA FILES FROM UNITY
 
 To create exportable vrcpa files, you will need to use VRChat SDK's `Build & Test` option in the builder tab.  The files will be outputted to `%APPDATA%\AppData\LocalLow\VRChat\VRChat\Avatars\PREFAB_NAME.vrca`.  Note that the file will have the same name as your models game object.
 
