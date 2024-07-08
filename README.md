@@ -1,4 +1,4 @@
-### VRChat Avatar Uploader
+# VRChat Avatar Uploader
 A simple program to upload avatars to VRChat.  Built for Avatar creators to distribute avatars to their clients without the need to request login details.
 
 ## 🚨 Currently nonfunctional!
@@ -11,7 +11,7 @@ VRChat flags any uploaded avatars with "Security checks failed".  Maybe the pack
 </p>
 
 
-# BUILDING VRCA FILES FROM UNITY
+### BUILDING VRCA FILES FROM UNITY
 
 To create exportable vrcpa files, you will need to use VRChat SDK's `Build & Test` option in the builder tab.  The files will be outputted to `%APPDATA%\AppData\LocalLow\VRChat\VRChat\Avatars\PREFAB_NAME.vrca`.  Note that the file will have the same name as your models game object.
 
