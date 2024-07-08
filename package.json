@@ -1,0 +1,38 @@
+{
+  "name": "vrchatavataruploader",
+  "version": "1.0.0",
+  "description": "Uploads VRChat avatar using VRCA files, designed for avatar creators and thier clients to easily share and upload models.",
+  "main": "./src/main.js",
+  "scripts": {
+    "start": "electron ./test.js",
+    "build": "electron-builder"
+  },
+  "author": "Arcane Blackwood",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^6.12.6",
+    "archiver": "^6.0.1",
+    "blake2": "^5.0.0",
+    "crypto": "^1.0.1",
+    "sharp": "^0.33.4",
+    "unzipper": "^0.10.14",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "electron": "^29.0.1",
+    "electron-builder": "^24.12.0"
+  },
+  "build": {
+    "appId": "arcane.vrchatavataruploader",
+    "files": [
+      "!Persistence.json",
+      "!test.js"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "extraResources": [
+      "assets"
+    ]
+  }
+}

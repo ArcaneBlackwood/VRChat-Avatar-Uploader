@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="index.css">
+  <title>VRChar Avatar Uploader</title>
+</head><body>
+
+	<div class="screen" name="login">
+		<!-- Login.  Username, password. -->
+		<fv class="popupBox loginBox">
+			<form id="login">
+				<h1>VRChat Login</h1>
+				<label for="username">Username</label>
+				<input type="text" id="username" value="">
+				<label for="password">Password</label>
+				<input type="password" id="password" value="">
+				<fh align="center">
+					<input type="checkbox" id="savelogin">
+					<label for="savelogin">Save login</label>
+				</fh>
+				<input type="submit" value="Login">
+				<fh>
+					<label id="loginInfo"></label>
+					<div class="forgot"><a href="https://vrchat.com/home/password" target="_black">Forgot password?</a></div>
+				</fh>
+			</form>
+		</div>
+	</div>
+	<div class="screen" name="main">
+		<fh class="settings">
+			<div flex="all" class="grid" id="settingsBase">
+				<fv class="fullSize settingsLeft">
+					<fv flex="none">
+						<fh align="center" style="margin: 5px auto;">
+							<input type="button" title="Reverts all the settings to the current selected avatars defaults."  id="revert" class="icon reload">
+							<b><label for="revert">Revert</label></b>
+						</fh>
+						<fh align="center" style="margin: 5px auto;">
+							<input id="lock" title="Keeps settings on changing avatars" type="checkbox">
+							<b><label for="lock">Lock inputs</label></b>
+						</fh>
+						<div class="mainIconImage">
+							<img class="iconImage">
+						</div>
+						<input type="file" id="iconinput" accept="image/*">
+					</fv>
+					<centered class="fillWidth logoutContainer">
+						<fv>
+							<label class="loggedinas">Logged in as</label>
+							<div><label class="property fillWidth" id="loggedinas">Username</label></div>
+							<input type="button" value="Logout" id="logout" class="fillWidth">
+						</fv>
+					</centered>
+				</fv>
+				<fv class="settingsRight">
+					<fh>
+						<label for="id" class="settings" flex="none">ID</label>
+						<img class="texticon" id="idwarn" title="Warning, ID doesnt exist" src="assets/warning.png">
+						<img class="texticon" id="idnew" title="Creating new avatar" src="assets/info-add.png">
+						<input type="text" id="id" class="fillWidth">
+					</fh>
+					<fh>
+						<label for="name" class="settings" flex="none">Name</label>
+						<input type="text" id="name" class="fillWidth">
+					</fh>
+					<label class="settings" flex="none">Description</label>
+					<textarea wrap="soft" id="desc" class="fillWidth" flex="none"></textarea>
+					<div class="flexgrid tags fillWidth">
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagSuggestive" value="content_sex">
+							<label for="tagSuggestive">Sexually Suggestive</label>
+						</fh>
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagAdult" value="content_adult">
+							<label for="tagAdult">Adult Language and Theme</label>
+						</fh>
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagViolence" value="content_violence">
+							<label for="tagViolence">Graphic Violence</label>
+						</fh>
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagGore" value="content_gore">
+							<label for="tagGore">Excessive Gore</label>
+						</fh>
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagHorror" value="content_horror">
+							<label for="tagHorror">Extreme Horror</label>
+						</fh>
+						<fh align="center">
+							<input name="tags" type="checkbox" id="tagFallback" value="author_quest_fallback" title="Make this avatar capable of being set as a fallback">
+							<label for="tagFallback">As Fallback</label>
+						</fh>
+					</div>
+					<fv flex="all" class="vrcas">
+						<fv id="vrcas">
+						</fv>
+						<input type="button" id="vrcaDelete" class="icon add">
+						<template id="vrcaTemplate">
+							<fh flex="none" align="center">
+								<img class="texticon" id="update" title="File will be uploaded" src="assets/sync.png">
+								<input type="file" id="vrca" accept=".vrca" title="Build a test avatar, find the vrca file under AppData\LocalLow\VRChat\VRChat\Avatars">
+								<select id="type">
+									<option value="none">None</option>
+									<option value="standalonewindows">Desktop</option>
+									<option value="android">Quest</option>
+								</select>
+								<input type="button" id="vrcadelete" class="icon cross" title="Remove VRCA file">
+							</fh>
+						</template>
+					</fv>
+					
+					<div class="flexgrid tags fillWidth" id="release">
+						<fh align="center">
+							<input type="radio" id="releasePublic" name="releaseStatus" value="public" title="An avatar as public is one that given enabled, anyone can clone and keep favorited">
+							<label for="releasePublic">Public</label>
+						</fh>
+						<fh align="center">
+							<input type="radio" id="releasePrivate" name="releaseStatus" value="private" checked title="An avatar as private nobody can ever clone or favorite">
+							<label for="releasePrivate">Private</label>
+						</fh>
+						<fh align="center">
+							<input type="radio" id="releaseHidden" name="releaseStatus" value="hidden" title="Nobody can see this sneaky avatar uwu">
+							<label for="releaseHidden">Hidden</label>
+						</fh>
+					</div> 
+					
+					
+				</fv>
+				<fv>
+					<input class="big fillWidth" type="button" id="load" value="Load Package" title="Loads a custom .vrcpa package that contains avatar information.  Ask for this from a creator, yay!">
+					<input class="big fillWidth" type="button" id="save" value="Save Package" title="Exports the current settings, vrca's and icon to a neat package.  Used by creators.">
+					<input class="big fillWidth" type="button" id="upload" value="Upload" title="Upload your avatar to your current account!">
+				</fv>
+				<fv>
+				    <div><label class="property fillWidth" id="packagename"></label></div>
+				    <centered>
+                        <label id="status"></label>
+				    </centered>
+				    <div class="progressbar" id="progressmain">
+                        <div class="bar"></div>
+                        <div class="shadow"></div>
+				    </div>
+				</fv>
+		    </div>
+			<div class="resizerh"> </div>
+			<fv flex="all" id="avatarList">
+				<fh class="avatartopbar" align="center">
+					<centered flex="grow">
+						<input type="text" id="avatarSearchText" class="search fillWidth" title="Searches for avatars containing words typed. Use &quot;X&quot; to search for specific orders of words">
+						<input type="button" id="avatarSearch" class="icon search">
+					</centered>
+					<div style="width:50px;"></div>
+					<input type="button" id="avatarReload" class="icon reload">
+				</fh>
+				<div class="avatars scrollbar" flex="all">
+				</div>
+				<template id="avatarTemplate">
+					<fh class="avatar" state="none">
+						<div class="avatarImage">
+							<img class="iconImage">
+						</div>
+						<fv flex="all">
+							<fh>
+								<label class="settings" flex="none">ID</label>
+								<label class="property fillWidth id">avtr_70a97cfb-7ecfdsfdsfdsf9</label>
+							</fh>
+							<fh>
+								<label class="settings" flex="none">Name</label>
+								<label class="property fillWidth name">Idk Some silly avatar :3</label>
+							</fh>
+							<fh>
+								<label class="info">Date idk</label>
+								<div flex="grow"></div>
+								<input type="button" class="red" id="delete" value="Delete">
+							</fh>
+						</fv>
+					</fh>
+				</template>
+			</fv>
+		</div>
+	</div>
+	<div class="popups">
+	    <div class="background">
+	        
+	    </div>
+			<fv class="confirm popupBox">
+				<label>Default confirm text</label>
+				<fh>
+					<input type="button" class="green" id="confirm" value="Confirm">
+					<div flex="grow" style="width: 100px;"></div>
+					<input type="button" class="red" id="cancel" value="Cancel">
+				</fh>
+			</fv>
+			<fv class="code popupBox">
+				<label>Enter your 2FA code</label>
+				<input type="text" id="code" inputmode="numeric" maxlength="6">
+				<fh>
+					<input type="button" class="green" id="confirm" value="Confirm">
+					<div flex="grow" style="width: 100px;"></div>
+					<input type="button" class="red" id="cancel" value="Cancel">
+				</fh>
+			</fv>
+			<fv class="message popupBox">
+				<label></label>
+				<fh>
+					<div flex="grow" style="width: 100px;"></div>
+					<input type="button" id="ok" value="Ok">
+				</fh>
+			</fv>
+			<fv class="avatarConfirm popupBox">
+				<label id="text">Default confirm text</label>
+				<fh class="add id" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>ID</label>
+					<div flex="grow"></div>
+					<label class="property sized">DA-D-AS-BDFG-G4-T--FA</label>
+				</fh>
+				<fh class="add image" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Upload new image</label>
+				</fh>
+				<fh class="add name" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Name</label>
+					<div flex="grow"></div>
+					<label class="property sized"></label>
+				</fh>
+				<fh class="add desc" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Description</label>
+					<div flex="grow"></div>
+					<label class="property"></label>
+				</fh>
+				<fh class="add tags" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Tags</label>
+					<div flex="grow"></div>
+					<fh align="center" class="content">
+						<label class="property sized">TEST</label>
+					</fh>
+				</fh>
+				<fh class="add quest" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Quest VRCA</label>
+					<div flex="grow"></div>
+					<label class="property sized">test.vrca</label>
+				</fh>
+				<fh class="add desktop" align="center">
+					<img class="icon" src="assets/generic-add.png">
+					<label>Desktop VRCA</label>
+					<div flex="grow"></div>
+					<label class="property sized">test.vrca</label>
+				</fh>
+				<fh id="buttons">
+					<input type="button" class="green" id="confirm" value="Confirm">
+					<div flex="grow" style="width: 100px;"></div>
+					<input type="button" class="red" id="cancel" value="Cancel">
+				</fh>
+			</fv>
+	</div>
+	
+  <script src="renderer.js" type="module"></script>
+</body></html>
