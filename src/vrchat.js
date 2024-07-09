@@ -160,7 +160,7 @@ function httpRequst(data, method, location, objectSend, headers) {
 		request.end();
 	});
 }
-function uploadAWS(data, url, fileData, fileExtension) {
+function uploadAWS(data, url, fileData, md5, fileExtension) {
 	var headers = {};
 	const method = "put";
 	
@@ -175,6 +175,7 @@ function uploadAWS(data, url, fileData, fileExtension) {
 	headers["user-agent"] = userAgentString;
 	headers["Content-type"] = mimeType;
 	headers['Content-Length'] = fileData.length;
+	headers['Content-MD5'] = md5;
 	headers['Accept'] = "application/json";
 	
 	if (host.includes("vrchat")) {

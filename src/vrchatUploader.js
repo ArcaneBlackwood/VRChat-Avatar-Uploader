@@ -7,7 +7,7 @@ const unityVersion = "2022.3.6f1";
 
 const MULTIPART_PART_SIZE = 100 * 1024 * 1024;
 
-async function UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress) {
+async function UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, mimeType, md5, onProgress) {
 	let uploadStatus;
 	try {
 		uploadStatus = await requests.getFileUploadStatus(vrcLogin, currentFile.id, currentFile.GetLatestVersion(), fileUploadType);
@@ -82,7 +82,7 @@ async function UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, 
 
 		
 		try {
-			let result = await uploadAWS(vrcLogin, uploadUrl, sizedArray, fileExtension);
+			let result = await uploadAWS(vrcLogin, uploadUrl, sizedArray, md5, fileExtension);
 			if (result?.headers?.etag != null) {
 				let etagStr = result.headers.etag.trim();
 				console.log("Got an etag "+etagStr+" from S3");
@@ -114,7 +114,7 @@ async function UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, 
 	onProgress?.("Uploaded "+parts+" parts", 1);
 	return false;
 }
-async function UploadSimple(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress) {
+async function UploadSimple(vrcLogin, filename, fileUploadType, currentFile, mimeType, md5, onProgress) {
 	console.log("Uploading file '"+utils.getFilename(filename)+"'");
 	let startUploadResp = await requests.startFileUpload(vrcLogin, currentFile.id, currentFile.GetLatestVersion(), fileUploadType);
 	let uploadUrl = startUploadResp.url;
@@ -130,7 +130,7 @@ async function UploadSimple(vrcLogin, filename, fileUploadType, currentFile, mim
 
 	onProgress?.("Uploading part 1/1", 0.75);
 	try {
-		let response = await uploadAWS(vrcLogin, uploadUrl, fileData, utils.getExtension(filename));
+		let response = await uploadAWS(vrcLogin, uploadUrl, fileData, md5, utils.getExtension(filename));
 	} catch (e) {
 		const e2 = new Error("failed to upload "+fileUploadType+" to "+uploadUrl+": "+e.message);
 		console.error(e, e2);
@@ -313,7 +313,7 @@ async function UploadFile(vrcLogin, filePath, asFilename, fileId, onProgress) {
 			if (fileCategory != "simple") {
 					//UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress)
 					try {
-						await UploadMultipart(vrcLogin, filePath, "file", currentFile, mimeType, onProgress);
+						await UploadMultipart(vrcLogin, filePath, "file", currentFile, mimeType, fileMD5b64, onProgress);
 					} catch (e) {
 							// cleanup the file if we created it
 							if (creatingNewFile) {
@@ -328,7 +328,7 @@ async function UploadFile(vrcLogin, filePath, asFilename, fileId, onProgress) {
 			{
 					//UploadSimple(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress)
 					try {
-						await UploadSimple(vrcLogin, filePath, "file", currentFile, mimeType, onProgress);
+						await UploadSimple(vrcLogin, filePath, "file", currentFile, mimeType, fileMD5b64, onProgress);
 					} catch(e) {
 							// cleanup the file if we created it
 							if (creatingNewFile) {
@@ -353,7 +353,7 @@ async function UploadFile(vrcLogin, filePath, asFilename, fileId, onProgress) {
 			if (fileCategory != "simple") {
 					//UploadMultipart(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress)
 					try {
-						await UploadMultipart(signatureFilePath, "signature", currentFile, "application/x-rsync-signature", onProgress);
+						await UploadMultipart(signatureFilePath, "signature", currentFile, "application/x-rsync-signature", sigMD5b64, onProgress);
 					} catch(e) {
 							// cleanup the file if we created it
 							if (creatingNewFile) {
@@ -368,7 +368,7 @@ async function UploadFile(vrcLogin, filePath, asFilename, fileId, onProgress) {
 			{
 					//UploadSimple(vrcLogin, filename, fileUploadType, currentFile, mimeType, onProgress)
 					try {
-						await UploadSimple(vrcLogin, signatureFilePath, "signature", currentFile, "application/x-rsync-signature", onProgress);
+						await UploadSimple(vrcLogin, signatureFilePath, "signature", currentFile, "application/x-rsync-signature", sigMD5b64, onProgress);
 					} catch(e) {
 							// cleanup the file if we created it
 							if (creatingNewFile) {

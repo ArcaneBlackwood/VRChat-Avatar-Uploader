@@ -19,7 +19,7 @@ Use either of the following options:
 - Download the repo zipped off Github by downloading https://github.com/ArcaneBlackwood/VRChat-Avatar-Uploader/archive/refs/heads/main.zip (Can be found at the top of the page, a green `<> Code v` button, select `Download Zip`).  Extract the zipfile somewhere and open a terminal in that folder either by shift-right clicking and click `Open PowerShell window here`, or open command prompt from the start menu and `cd C:\Users\SomeUser\...` to the extracted folders location.
 
 ### Install the nessisary tools and dependencies
-You will need NodeJS which can be found at https://nodejs.org/
+You will need NodeJS which can be found at https://nodejs.org/ 
 Note Im using Node.js v20.15.0, which can be downloaded directly [here!](https://nodejs.org/dist/v20.15.1/node-v20.15.1-x64.msi)
 
 Run `npm install` to install all the required packages for this repository.
@@ -35,36 +35,6 @@ Standalone files can also be found under `./dist/win-unpacked/`
 
 ## BUILDING VRCA FILES FROM UNITY
 
-To create exportable vrcpa files, you will need to use VRChat SDK's `Build & Test` option in the builder tab.  The files will be outputted to `%APPDATA%\AppData\LocalLow\VRChat\VRChat\Avatars\PREFAB_NAME.vrca`.  Note that the file will have the same name as your models game object.
+Download and add the file [`./BundleExporter.cs`](https://raw.githubusercontent.com/ArcaneBlackwood/VRChat-Avatar-Uploader/main/BundleExporter.cs) to your Unity project, you can put it anywhere inside your Assets.
 
-Although for Quest its a little more difficult. Currently, the UI does not allow test building, though the VRChat SDK is completely capable of assembling a file. With some basic modifications to the UI code we can enable test building for Quest. All the modifications will be done in the file `YOUR_PROJECT\Packages\com.vrchat.avatars\Editor\VRCSDK\SDK3A\VRCSdkControlPanelAvatarBuilder.cs`.
-
-Find (Control+F) the term `Avatar testing is only supported on Windows`
-And comment out the code with slashes like:
-```
-	//if (testAvatar && Tools.Platform != "standalonewindows")
-	//{
-	//    throw new BuilderException("Avatar testing is only supported on Windows");
-	//}
-```
-
-Find the term `You must fix the issues listed above before you can do an Offline Test`
-And a few lines above insert `EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android ||`
-So it looks something like this:
-```
-var localBuildsAllowed = (EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows ||
-  EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android ||  //INSERTED LINE HERE
-  EditorUserBuildSettings.activeBuildTarget == BuildTarget.StandaloneWindows64) &&
-  ((_builder.NoGuiErrorsOrIssuesForItem(_selectedAvatar) && _builder.NoGuiErrorsOrIssuesForItem(_builder)) || APIUser.CurrentUser.developerType ==
-    APIUser.DeveloperType.Internal);
-```
-
-Find the term `Building and testing on this platform is not supported.`
-And comment out the code's `#if` block with slashes like:
-```c#
-	//#if UNITY_ANDROID || UNITY_IOS
-	//  _buildAndTestButton.SetEnabled(false);
-	//  _localTestDisabledBlock.RemoveFromClassList("d-none");
-	//  _localTestDisabledText.text = "Building and testing on this platform is not supported.";
-	//#endif
-```
+In Unity, Ensure you are logged into the VRChat SDK. Goto the menu at the top and click `VRChat SDK` -> `Utilities` -> `Bundle Exporter`.  You can then select the avatar you want to export, click `Export Bundle`, and choose a location to save the exported bundle.  This exported file can then be imported into the avatar uploader.
